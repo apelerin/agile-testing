@@ -38,7 +38,12 @@ public class HeroTest {
 
 	@Test
 	public void testHeroLevelUp() throws Exception {
-		// TODO
+
+	}
+
+	@Test
+	public void testHeroGetName() throws Exception {
+		assertThat(hero.getName(), is("Jaina Portvaillant"));
 	}
 
 	@Test
