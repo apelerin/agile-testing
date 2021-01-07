@@ -13,3 +13,8 @@ Feature: Fonctionnalités
 		
 		When je sélectionne l'option Capacité de conduite entièrement autonome
 		Then le prix augmente de 89 €/mois
+
+		When je clique sur le logo en haut à gauche
+		Then j'arrive sur la page d'accueil US "https://www.tesla.com/"
+		When je clique sur le lien localisations en bas de page
+		Then l'url est "https://www.tesla.com/findus/list"

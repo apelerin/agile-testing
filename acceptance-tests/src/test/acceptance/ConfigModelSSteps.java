@@ -6,6 +6,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -99,6 +100,46 @@ public class ConfigModelSSteps {
 		numberOnly= driver.findElement(By.xpath("//p[contains(@class, 'finance-item--price') and contains(@class, 'finance-item--price-before-savings')]")).getText().replaceAll("[^0-9]", "");
 		int finalValue = Integer.parseInt(numberOnly);
 		assertEquals(finalValue - initValue, arg1);
+	}
+
+	@When("^je clique sur le logo en haut à gauche$")
+	public void je_clique_sur_le_logo_en_haut_à_gauche() throws Throwable {
+		driver.findElement(By.xpath("//a[@href='/']")).click();
+
+		for (String windowHandle : driver.getWindowHandles()) {
+			driver.switchTo().window(windowHandle);
+		}
+	}
+
+	@Then("^j'arrive sur la page d'accueil US \"([^\"]*)\"$")
+	public void j_arrive_sur_la_page_d_accueil_US(String arg1) throws Throwable {
+		assertEquals(driver.getCurrentUrl(), arg1);
+	}
+
+	@When("^je clique sur le lien localisations en bas de page$")
+	public void je_clique_sur_le_lien_localisations_en_bas_de_page() throws Throwable {
+
+		// gérer cas popup de sélection de région
+		if (driver.findElements(By.xpath("//i[@class='tds-modal-close-icon']")).size() != 0){
+			driver.findElement(By.xpath("//i[@class='tds-modal-close-icon']")).click();
+		}
+		//-------//
+
+		for(int i = 0; i < 6; i++){
+			driver.findElement(By.id("page-new-homepage")).click();
+			WebElement test = driver.findElement(By.id("page-new-homepage"));
+			test.sendKeys(Keys.DOWN);
+			Thread.sleep(2500);
+		}
+
+		driver.findElement(By.xpath("//a[@href='/findus/list']")).click();
+		Thread.sleep(5000);
+	}
+
+	@Then("^l'url est \"([^\"]*)\"$")
+	public void l_url_est(String arg1) throws Throwable {
+		// j'ai retiré le fr_FR de l'url car lors du clic sur logo on se retrouve sur tesla.com
+		assertEquals(driver.getCurrentUrl(), arg1);
 	}
 
 	@After
