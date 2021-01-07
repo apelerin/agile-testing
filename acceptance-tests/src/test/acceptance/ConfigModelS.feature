@@ -4,7 +4,6 @@ Feature: Fonctionnalités
 		When je clique sur commander
 		Then l'url devrait être "https://www.tesla.com/fr_fr/models/design#battery"
 
-		# could be a feature ?
 		Then le prix affiché par défaut est un prix LOA à "768 € /mois" et "108 € /mois" d'économie de carburant
 		Then le montant total au terme du contrat est de "94 841 €"
 		When je sélectionne le modèle Performance

@@ -19,3 +19,11 @@ Feature: Fonctionnalités page évènement
 
 		When je cherche un évènement à "Londres, Royaume-Uni"
 		Then le premier résultat de recherche indique un évènement localisé à "Royaume-Uni"
+
+
+	Scenario: je cherche une visio au japon et me retrouve sur une page d'authentification
+		Given je suis sur la page évènements
+		When je cherche les events au "Japon"
+		Then j'ai des résultats
+		When je clique sur le deuxième résultat, correspondant à une visio
+		Then j'arrive sur une page d'authentification contenant "https://auth.tesla.com/"

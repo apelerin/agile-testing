@@ -7,7 +7,7 @@ javac -d ../bin/ test/acceptance/CaracteristicsTab*.java &&
 
 cd ../bin &&
 
-java org.junit.runner.JUnitCore test.acceptance.HomepageTest &&
-java org.junit.runner.JUnitCore test.acceptance.ConfigModelSTest &&
-java org.junit.runner.JUnitCore test.acceptance.EvenementTest &&
-java org.junit.runner.JUnitCore test.acceptance.CaracteristicsTabTest
+#java org.junit.runner.JUnitCore test.acceptance.HomepageTest &&
+#java org.junit.runner.JUnitCore test.acceptance.ConfigModelSTest &&
+java org.junit.runner.JUnitCore test.acceptance.EvenementTest
+#java org.junit.runner.JUnitCore test.acceptance.CaracteristicsTabTest

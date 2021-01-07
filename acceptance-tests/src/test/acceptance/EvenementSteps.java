@@ -155,6 +155,34 @@ public class EvenementSteps {
 		// pour couleur rouge, le li a pour css : color: var(--tds-color--red10);
 	}
 
+	@When("^je cherche les events au \"([^\"]*)\"$")
+	public void je_cherche_les_events_au(String arg1) throws Throwable {
+		WebElement inputBox = driver.findElement(By.id("edit-geoautocomplete"));
+		inputBox.clear();
+		inputBox.sendKeys(arg1);
+		Thread.sleep(4000);
+		inputBox.sendKeys(Keys.DOWN);
+		inputBox.sendKeys(Keys.RETURN);
+		Thread.sleep(4000);
+	}
+
+	@Then("^j'ai des résultats$")
+	public void j_ai_des_résultats() throws Throwable {
+		assertTrue((driver.findElements(By.xpath("//div[@class='view-content']/div"))).size() > 0);
+	}
+
+	@When("^je clique sur le deuxième résultat, correspondant à une visio$")
+	public void je_clique_sur_le_deuxième_résultat_correspondant_à_une_visio() throws Throwable {
+		driver.findElement(By.xpath("//h2/a[@href='/fr_FR/event/kawasaki']")).click();
+		Thread.sleep(3000);
+	}
+
+	@Then("^j'arrive sur une page d'authentification contenant \"([^\"]*)\"$")
+	public void j_arrive_sur_une_page_d_authentification_contenant(String arg1) throws Throwable {
+		System.out.println("test : " + driver.getCurrentUrl());
+		assertThat(driver.getCurrentUrl(), containsString(arg1));
+	}
+
 	@After
 	public void afterScenario() {
 		driver.quit();
