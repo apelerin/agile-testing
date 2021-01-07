@@ -56,6 +56,51 @@ public class ConfigModelSSteps {
 		assertThat(price.getText(), containsString(arg1));
 	}
 
+	@Then("^le prix affiché par défaut est un prix LOA à \"([^\"]*)\" et \"([^\"]*)\" d'économie de carburant$")
+	public void le_prix_affiché_par_défaut_est_un_prix_LOA_à_et_d_économie_de_carburant(String arg1, String arg2) throws Throwable {
+		assertThat(driver.findElement(By.xpath("//p[@class='finance-item--price finance-item--price-before-savings']")).getText(), containsString(arg1));
+		assertThat(driver.findElement(By.xpath("//p[@class='finance-item--price']")).getText(), containsString(arg2));
+	}
+
+	@Then("^le montant total au terme du contrat est de \"([^\"]*)\"$")
+	public void le_montant_total_au_terme_du_contrat_est_de(String arg1) throws Throwable {
+		driver.findElement(By.xpath("//a[@class='finance-content--modal']")).click();
+		Thread.sleep(2000);
+		assertEquals(driver.findElement(By.id("totalLeaseAmount")).getAttribute("value"), arg1);
+		driver.findElement(By.xpath("//span[@class='modal-content--close']")).click();
+		Thread.sleep(2000);
+	}
+
+	@When("^je sélectionne le modèle Performance$")
+	public void je_sélectionne_le_modèle_Performance() throws Throwable {
+		driver.findElement(By.xpath("//span[contains(.,'Performance')]")).click();
+		Thread.sleep(2000);
+	}
+
+	@Then("^le prix en LOA est à \"([^\"]*)\" et \"([^\"]*)\" d'économie de carburant$")
+	public void le_prix_en_LOA_est_à_et_d_économie_de_carburant(String arg1, String arg2) throws Throwable {
+		assertThat(driver.findElement(By.xpath("//p[@class='finance-item--price finance-item--price-before-savings']")).getText(), containsString(arg1));
+		assertThat(driver.findElement(By.xpath("//p[@class='finance-item--price']")).getText(), containsString(arg2));
+	}
+
+	@When("^je sélectionne l'option Capacité de conduite entièrement autonome$")
+	public void je_sélectionne_l_option_Capacité_de_conduite_entièrement_autonome() throws Throwable {
+		driver.findElement(By.xpath("//span[contains(text(), 'Pilotage automatique')]")).click();
+		for (String windowHandle : driver.getWindowHandles()) {
+			driver.switchTo().window(windowHandle);
+		}
+	}
+
+	@Then("^le prix augmente de (\\d+) €/mois$")
+	public void le_prix_augmente_de_€_mois(int arg1) throws Throwable {
+		String numberOnly= driver.findElement(By.xpath("//p[contains(@class, 'finance-item--price') and contains(@class, 'finance-item--price-before-savings')]")).getText().replaceAll("[^0-9]", "");
+		int initValue = Integer.parseInt(numberOnly);
+		driver.findElement(By.xpath("//i[contains(@class, 'icon-checkbox') and contains(@class, 'option-checkbox--icon') and contains(@class, 'icon-checkbox--blue')]")).click();
+		numberOnly= driver.findElement(By.xpath("//p[contains(@class, 'finance-item--price') and contains(@class, 'finance-item--price-before-savings')]")).getText().replaceAll("[^0-9]", "");
+		int finalValue = Integer.parseInt(numberOnly);
+		assertEquals(finalValue - initValue, arg1);
+	}
+
 	@After
 	public void afterScenario() {
 		driver.quit();
