@@ -36,17 +36,55 @@ public class FunctionalTest {
     // Test de la Story #1-homepage (https://trello.com/c/WKTneu9o/1-homepage)
 	@Test
     public void testHomepage() throws Exception {
-        driver.get("https://www.tesla.com/fr_fr");
-		assertEquals(driver.getTitle(), "Voitures électriques, énergie solaire et propre | Tesla France");
-		assertEquals(driver.findElement(By.name("description")).getAttribute("content"), "Tesla accélère la transition mondiale vers une énergie durable en proposant des véhicules électriques, des panneaux solaires et des solutions intégrées d'énergie renouvelable pour les particuliers et les entreprises.");
+        driver.get("https://www.tesla.com/fr_FR/");
 
-		Thread.sleep(2000);
+        ///////////////////////////////////////////////////////////////
+        assertEquals(driver.getTitle(), "Voitures électriques, énergie solaire et propre | Tesla France");
+
+        ///////////////////////////////////////////////////////////////
+        assertEquals(driver.findElement(By.xpath("//meta[@name='description']")).getAttribute("content"), "Tesla accélère la transition mondiale vers une énergie durable en proposant des véhicules électriques, des panneaux solaires et des solutions intégrées d'énergie renouvelable pour les particuliers et les entreprises.");
+        
+        ///////////////////////////////////////////////////////////////
         List<String> listTeslaPunches = Arrays.asList("Model 3", "Model S", "Model X", "Model Y", "Systèmes d'énergie solaire et Powerwalls");
         for(String data : listTeslaPunches) {
             assertEquals(driver.findElement(By.xpath("//h1[contains(., \"" + data + "\")]")).getAttribute("innerHTML"), data);
         }
+
+        ///////////////////////////////////////////////////////////////
+        List<String> titles = Arrays.asList(
+            "https://www.tesla.com/fr_fr/models", 
+            "https://www.tesla.com/fr_fr/model3",
+            "https://www.tesla.com/fr_fr/modelx",
+            "https://www.tesla.com/fr_fr/modely",
+            "https://www.tesla.com/fr_fr/powerwall",
+            "https://www.tesla.com/fr_fr/charging"
+            );
+        List<WebElement> allLinks = driver.findElements(By.xpath("(//ol[@class='tds-menu-header-nav--list'])[1]/li/a"));
+        int nbMatches = 0;
+        for (int i = 0; i < allLinks.size(); i++){
+            if(titles.contains(allLinks.get(i).getAttribute("href"))){
+                nbMatches++;
+            }
+            System.out.println("test : " + allLinks.get(i).getAttribute("href"));
+        }
+        assertEquals(nbMatches, allLinks.size());
+
+        ///////////////////////////////////////////////////////////////
+        List<String> listHamburgerMenu = Arrays.asList("VÉHICULES DISPONIBLES", "VÉHICULES D'OCCASION", "REPRISE", "CYBERTRUCK", "ROADSTER", "ÉNERGIE", "ESSAIS", "FLOTTES & ENTREPRISES", "NOUS TROUVER", "ÉVÉNEMENTS", "ASSISTANCE");
+        driver.findElement(By.className("tds-menu-header-main--trigger_icon")).click();
+        Thread.sleep(2000);
+        List<WebElement> navList = driver.findElements(By.xpath("//ol[@class='tds-menu-header-nav--list tds-menu-header-nav--parent_nav tds--hide_on_mobile']/li/a"));
+        int nbResult = 0;
+        for (int i = 0; i < navList.size(); i++){
+            if(listHamburgerMenu.contains(navList.get(i).getText())){
+                nbResult++;
+            }
+            System.out.println("test : " + navList.get(i).getText());
+        }
+        assertEquals(nbResult, listHamburgerMenu.size());
     }
 
+    // Test de la Story #2-homepage (https://trello.com/c/g4fKVeQP/8-configurateur-tesla-model-s)
     @Test
     public void testModel() throws Exception {
         driver.get("https://www.tesla.com/fr_fr/models/design#autopilot");
@@ -59,9 +97,6 @@ public class FunctionalTest {
         assertEquals(finalValue - initValue, 89);
     }
 
-    // Test de la Story n ...
-    // TODO
-    // To Be Completed By Coders From Coding Factory
 
     @After
     public void tearDown() throws Exception {
