@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -107,6 +108,27 @@ public class EvenementSteps {
 	@Then("^le premier résultat de recherche indique un évènement localisé à \"([^\"]*)\"$")
 	public void le_premier_résultat_de_recherche_indique_un_évènement_localisé_à(String arg1) throws Throwable {
 		assertEquals(driver.findElement(By.xpath("//div[@class='location-teaser']")).getText(), arg1);
+	}
+
+	@Then("^un formulaire à droite de l'écran contient les champs suivants: \\[\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\]$")
+	public void un_formulaire_à_droite_de_l_écran_contient_les_champs_suivants(String arg1, String arg2, String arg3, String arg4, String arg5, String arg6, String arg7) throws Throwable {
+		List<String> champs = Arrays.asList(
+				arg1,
+				arg2,
+				arg3,
+				arg4,
+				arg5,
+				arg6
+		);
+		for(String value : champs) {
+			assertThat(driver.findElement(By.xpath("//label[contains(., '" + value + "')]")).getText(), containsString(value));
+		}
+		assertThat(driver.findElement(By.xpath("//span[contains(., '" + arg7 + "')]")).getText(), containsString(arg7));
+	}
+
+	@Then("^le formulaire contient un bouton \"([^\"]*)\" pour envoyer ces informations$")
+	public void le_formulaire_contient_un_bouton_pour_envoyer_ces_informations(String arg1) throws Throwable {
+		assertEquals(driver.findElement(By.id("edit-submit-td-ajax")).getAttribute("value"), arg1);
 	}
 
 	@When("^je rempli tous les champs du formulaire Soyez informé sauf l'email et que j'appuis sur Suivant$")

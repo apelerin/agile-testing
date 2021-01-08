@@ -14,6 +14,9 @@ Feature: Fonctionnalités page évènement
 	Scenario: Vérification des formulaires de la page
 		Given je suis sur la page évènements
 
+		Then un formulaire à droite de l'écran contient les champs suivants: ["Prénom", "Nom", "E-mail", "Téléphone", "Region", "Code postal", "Recevoir les News Tesla"]
+		Then le formulaire contient un bouton "Suivant" pour envoyer ces informations
+
 		When je rempli tous les champs du formulaire Soyez informé sauf l'email et que j'appuis sur Suivant
 		Then un message textuel apparait sous le champ email indiquant "obligatoire"
 
